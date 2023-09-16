@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const apiKey = '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'; // Replace with your OpenAI API key
+const apiKey = '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'; // Replace with your OpenAI API key
 const apiUrl = 'https://api.openai.com/v1/completions';
 
 const generateContent = async (destination) => {

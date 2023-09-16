@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Header, ContentInput, GeneratedContent, Footer } from './components';
+import { Header, ContentInput, GeneratedContent } from './components';
 import './styles/main.css';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
   const generateContent = async (destination) => {
     try {
       // Replace 'YOUR_API_KEY' with your actual OpenAI API key
-      const apiKey = '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';
+      const apiKey = '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';
 
       // Set the text to be generated based on the destination
       const prompt = `Generate content for ${destination}`;
@@ -24,7 +24,7 @@ function App() {
         body: JSON.stringify({
           model: 'text-davinci-002', // Use the appropriate model name
           prompt,
-          max_tokens: 100, // Adjust the token limit as needed
+          max_tokens: 300, // Adjust the token limit as needed
         }),
       });
 
@@ -46,7 +46,7 @@ function App() {
       <Header />
       <ContentInput onGenerateContent={generateContent} />
       <GeneratedContent content={generatedContent} />
-      <Footer />
+
     </div>
   );
 }

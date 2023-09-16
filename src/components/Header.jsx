@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className="bg-blue-500 p-4 text-white">
       <div className="container mx-auto">
@@ -15,8 +21,16 @@ function Header() {
             <h1 className="text-3xl font-extrabold">Your Tourism App</h1>
           </div>
 
+          {/* Toggle Menu Button */}
+          <button
+            className="lg:hidden block text-xl focus:outline-none"
+            onClick={toggleMenu}
+          >
+            Menu
+          </button>
+
           {/* Navigation Links */}
-          <nav className="mb-4 lg:mb-0">
+          <nav className={`lg:flex ${isMenuOpen ? 'block' : 'hidden'}`}>
             <ul className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-6 text-lg font-medium">
               <li><a href="#" className="hover:text-blue-200">Home</a></li>
               <li><a href="#" className="hover:text-blue-200">Destinations</a></li>
