@@ -1,12 +1,12 @@
-// src/services/openai.js
 const axios = require('axios');
 
-const apiKey = 'YOUR_API_KEY';
-const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+const apiKey = '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'; // Replace with your OpenAI API key
+const apiUrl = 'https://api.openai.com/v1/completions';
 
 const generateContent = async (destination) => {
   try {
     const response = await axios.post(apiUrl, {
+      model: 'text-davinci-002', // Use the appropriate model name
       prompt: `Generate content for ${destination}`,
       max_tokens: 100, // Adjust the token limit as needed
     }, {
@@ -27,4 +27,4 @@ const generateContent = async (destination) => {
   }
 };
 
-export default generateContent;
+module.exports = generateContent;
