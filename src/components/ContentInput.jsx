@@ -3,10 +3,15 @@ import React, { useState } from 'react';
 function ContentInput({ onGenerateContent }) {
   // State to track user input
   const [destination, setDestination] = useState('');
+  const [selectedPlace, setSelectedPlace] = useState('');
 
   // Function to handle input changes
-  const handleInputChange = (event) => {
+  const handleDestinationChange = (event) => {
     setDestination(event.target.value);
+  };
+
+  const handlePlaceChange = (event) => {
+    setSelectedPlace(event.target.value);
   };
 
   return (
@@ -18,10 +23,21 @@ function ContentInput({ onGenerateContent }) {
           placeholder="Enter a destination"
           className="px-3 py-2 border rounded-lg flex-grow focus:outline-none focus:ring focus:ring-blue-300"
           value={destination}
-          onChange={handleInputChange}
+          onChange={handleDestinationChange}
         />
+        <select
+          className="px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+          value={selectedPlace}
+          onChange={handlePlaceChange}
+        >
+          <option value="">Select a place</option>
+          <option value="cafe">Cafe</option>
+          <option value="grocery store">Grocery Store</option>
+          <option value="tourist attractions">Tourist Attractions</option>
+          {/* Add more options as needed */}
+        </select>
         <button
-          onClick={() => onGenerateContent(destination)}
+          onClick={() => onGenerateContent(destination, selectedPlace)}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
         >
           Generate
