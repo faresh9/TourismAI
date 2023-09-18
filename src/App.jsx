@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from 'react';
 import { Header, ContentInput, GeneratedContent } from './components';
 import './styles/main.css';
@@ -9,20 +10,26 @@ function App() {
   // Function to generate content using OpenAI API and include Unsplash images
   const generateContent = async (destination, selectedPlace) => {
     try {
-      // Call Unsplash API to search for images
-      const unsplashApiKey = 'wf6tsxbDVhM6-hQFm08M-kQg8iN-uqdK0wObXTMN2VY';
-      const unsplashResponse = await fetch(
-        `https://api.unsplash.com/search/photos?query=${selectedPlace} ${destination}`,
+      // Use your Google API key here
+      const googleApiKey = 'AIzaSyA7YMzcxW-CYPbRbpVil28ZRnw6Dx4tCow';
+      const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+
+      // Fetch places from Google Places API using the CORS proxy
+      const placesResponse = await fetch(
+        `${corsProxy}https://maps.googleapis.com/maps/api/place/textsearch/json?query=${selectedPlace}+in+${destination}&key=${googleApiKey}`,
         {
+          method: 'GET',
           headers: {
-            'Authorization': `Client-ID ${unsplashApiKey}`,
+            'Origin': 'http://127.0.0.1:5173', // Replace with your actual origin
           },
         }
       );
 
-      if (unsplashResponse.ok) {
-        const unsplashData = await unsplashResponse.json();
-        const photos = unsplashData.results || [];
+      if (placesResponse.ok) {
+        const placesData = await placesResponse.json();
+        const places = placesData.results || [];
+
+        console.log('Google Places:', places); // Add this line for debugging
 
         // Construct AI prompt and generate content
         let prompt = `Generate a list of ${selectedPlace} in ${destination}`;
@@ -45,27 +52,30 @@ function App() {
           const data = await response.json();
           const generatedContent = data.choices[0].text;
 
-          // Combine AI-generated content with Unsplash images
-          const contentWithPictures = (
+          console.log('Generated Content:', generatedContent); // Add this line for debugging
+
+          // Combine AI-generated content with Google Places data
+          const contentWithPlaces = (
             <div>
-              <h2>List of {selectedPlace} in {destination}</h2>
-              <ul dangerouslySetInnerHTML={{ __html: generatedContent }} />
-              {photos.map((photo) => (
-                <img
-                  key={photo.id}
-                  src={photo.urls.regular} // Use the image URL from Unsplash
-                  alt="Place Image"
-                />
-              ))}
+              <h2 className="text-xl font-semibold mb-4">List of {selectedPlace} in {destination}</h2>
+              <div dangerouslySetInnerHTML={{ __html: generatedContent }} />
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">Places:</h3>
+                <ul>
+                  {places.map((place, index) => (
+                    <li key={index}>{place.name}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           );
 
-          setGeneratedContent(contentWithPictures);
+          setGeneratedContent(contentWithPlaces);
         } else {
           throw new Error('AI content generation failed');
         }
       } else {
-        throw new Error('Failed to fetch images from Unsplash');
+        throw new Error('Failed to fetch places from Google');
       }
     } catch (error) {
       // Handle errors
