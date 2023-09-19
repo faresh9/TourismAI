@@ -12,7 +12,7 @@ function App() {
     try {
       // Use your Google API key here
       const googleApiKey = 'AIzaSyA7YMzcxW-CYPbRbpVil28ZRnw6Dx4tCow';
-      const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+      const corsProxy = 'https://corsproxy.io/?';
 
       // Fetch places from Google Places API using the CORS proxy
       const placesResponse = await fetch(
@@ -33,7 +33,7 @@ function App() {
 
         // Construct AI prompt and generate content
         let prompt = `Generate a list of ${selectedPlace} in ${destination}`;
-        const apiKey = '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'; // Replace with your OpenAI API key
+        const apiKey = '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'; // Replace with your OpenAI API key
         const response = await fetch('https://api.openai.com/v1/completions', {
           method: 'POST',
           headers: {
