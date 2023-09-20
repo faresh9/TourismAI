@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Header, ContentInput, GeneratedContent } from './components';
 import './styles/main.css';
+import dotenv from 'dotenv';
+
 
 function App() {
   // State to track the generated content
@@ -17,7 +19,7 @@ function App() {
   const fetchPlacePhotos = async (place) => {
     try {
       // Use your Google API key here
-      const googleApiKey = 'AIzaSyA7YMzcxW-CYPbRbpVil28ZRnw6Dx4tCow';
+      const googleApiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
       const corsProxy = 'https://corsproxy.io/?';
 
       // Fetch place details from Google Places API using the CORS proxy
@@ -71,7 +73,7 @@ function App() {
   const generateContent = async (destination, selectedPlace) => {
     try {
       // Use your Google API key here
-      const googleApiKey = 'AIzaSyA7YMzcxW-CYPbRbpVil28ZRnw6Dx4tCow';
+      const googleApiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
       const corsProxy = 'https://corsproxy.io/?';
 
       // Fetch places from Google Places API using the CORS proxy
@@ -100,7 +102,7 @@ function App() {
         // Construct a more informative AI prompt
         let prompt = `Generate a travel guide for ${selectedPlace} in ${destination}, including descriptions, recommendations, and photos.`;
 
-        const apiKey = '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'; // Replace with your OpenAI API key
+        const apiKey = import.meta.env.VITE_REACT_APP_OPENAI_API_KEY; // Replace with your OpenAI API key
         const response = await fetch('https://api.openai.com/v1/completions', {
           method: 'POST',
           headers: {
