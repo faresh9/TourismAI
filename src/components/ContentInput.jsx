@@ -1,3 +1,4 @@
+//src/components/ContentInput.jsx
 import React, { useState } from 'react';
 
 function ContentInput({ onGenerateContent }) {

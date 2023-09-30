@@ -10,6 +10,41 @@ function App() {
   const [generatedContent, setGeneratedContent] = useState('');
   const [placePhotos, setPlacePhotos] = useState({});
 
+
+  /*
+  
+  const {google} = require('googleapis');
+const analyticsreporting = google.analyticsreporting('v4');
+
+async function getReport() {
+  const response = await analyticsreporting.reports.batchGet({
+    requestBody: {
+      reportRequests: [
+        {
+          viewId: 'YOUR_VIEW_ID', // Replace with your view ID
+          dateRanges: [
+            {
+              startDate: '7daysAgo',
+              endDate: 'today',
+            },
+          ],
+          metrics: [
+            {
+              expression: 'ga:sessions',
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  console.log(response.data);
+}
+
+getReport().catch(console.error);
+
+  */ 
+
   useEffect(() => {
     // Initialize place photos state
     setPlacePhotos({});

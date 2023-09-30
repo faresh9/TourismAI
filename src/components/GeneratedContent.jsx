@@ -1,3 +1,4 @@
+//src/components/GeneratedContent.jsx
 import React from 'react';
 
 function GeneratedContent({ content }) {
