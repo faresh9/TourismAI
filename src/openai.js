@@ -1,8 +1,7 @@
-// Function to generate content using OpenAI API
 export const generateContentWithOpenAI = async (destination, selectedPlace, apiKey) => {
   try {
     // Construct a more informative AI prompt
-    let prompt = `Generate a travel guide for ${selectedPlace} in ${destination}, including descriptions, recommendations, and photos.`;
+    const prompt = `Generate a travel guide for ${selectedPlace} in ${destination}, including descriptions, recommendations, and photos.`;
 
     console.log('Prompt:', prompt);
 
@@ -15,8 +14,8 @@ export const generateContentWithOpenAI = async (destination, selectedPlace, apiK
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
-          prompt,
+          model: 'gpt-4',
+          messages: [{ role: 'user', content: prompt }],
           max_tokens: 600,
           temperature: 0.7,
         }),
@@ -28,12 +27,12 @@ export const generateContentWithOpenAI = async (destination, selectedPlace, apiK
     if (response.status === 200) {
       const data = await response.json();
       console.log('Response data:', data);
-      const generatedContent = data.choices[0].text;
+      const generatedContent = data.choices[0].message.content;
       return generatedContent;
     } else {
       const errorData = await response.json();
       console.error('Error data:', errorData);
-      throw new Error('AI content generation failed');
+      throw new Error(`AI content generation failed with status ${response.status}`);
     }
   } catch (error) {
     console.error('Error:', error);

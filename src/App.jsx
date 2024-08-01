@@ -15,7 +15,7 @@ function App() {
         selectedPlace,
         openaiApiKey
       );
-
+      console.log('key');
       setGeneratedContent(generatedContent);
     } catch (error) {
       console.error(error);
