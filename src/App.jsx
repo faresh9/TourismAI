@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Header, ContentInput, GeneratedContent } from './components';
 import './styles/main.css';
 import { generateContentWithOpenAI } from './openai'; // Import OpenAI function

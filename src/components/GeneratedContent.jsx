@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Markdown from 'markdown-to-jsx'
 function GeneratedContent({ content }) {
   return (
     <div className="my-8">
@@ -7,7 +7,7 @@ function GeneratedContent({ content }) {
       <div className="mt-4">
         {content ? (
           <div className="bg-white p-4 rounded-lg shadow">
-            <p>{content}</p>
+           <Markdown>{content}</Markdown>
           </div>
         ) : (
           <p>No content generated yet.</p>

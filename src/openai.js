@@ -1,9 +1,14 @@
+
+
+
 export const generateContentWithOpenAI = async (destination, selectedPlace, apiKey) => {
   try {
     // Construct a more informative AI prompt
-    const prompt = `Generate a travel guide for ${selectedPlace} in ${destination}, including descriptions, recommendations, and photos.`;
+    const prompt = `Generate a travel guide for ${selectedPlace} in ${destination}, including descriptions, recommendations, make it pretty and readable.`;
 
     console.log('Prompt:', prompt);
+
+    
 
     const response = await fetch(
       'https://api.openai.com/v1/chat/completions',
@@ -14,9 +19,9 @@ export const generateContentWithOpenAI = async (destination, selectedPlace, apiK
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4',
+          model: 'gpt-4o-mini',
           messages: [{ role: 'user', content: prompt }],
-          max_tokens: 600,
+          max_tokens: 300,
           temperature: 0.7,
         }),
       }
