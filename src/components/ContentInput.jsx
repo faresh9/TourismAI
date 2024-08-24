@@ -32,7 +32,7 @@ function ContentInput({ onGenerateContent }) {
           onChange={handlePlaceChange}
         >
           <option value="">Select a place</option>
-          <option value="cafe">Cafe</option>
+          <option value="cafe">Cafe</option>  
           <option value="grocery store">Grocery Store</option>
           <option value="tourist attractions">Tourist Attractions</option>
           {/* Add more options as needed */}
