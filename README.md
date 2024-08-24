@@ -57,12 +57,16 @@ Before you begin, ensure you have met the following requirements:
 1. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
-2. Access the application in your web browser at `http://localhost:3000`.
+2. Access the application in your web browser at `http://localhost:5173/`.
 
 3. Enter your travel destination, click "Generate Content," and explore the AI-generated recommendations and information.
+
+## Live Preview
+
+🚀 [Live preview](https://tourism-ai.vercel.app/)
 
 ## Contributing
 
