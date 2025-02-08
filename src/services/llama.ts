@@ -13,17 +13,17 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
     messages: [
       {
         role: 'system' as const,
-        content: 'You are a travel expert helping select the best places to visit.',
+        content: 'You are a travel expert. Return ONLY a JSON array of place IDs without any explanation or additional text. Example: ["123", "456", "789"]',
       },
       {
         role: 'user' as const,
-        content: `Given these places: ${JSON.stringify(places)}, select the best 3 places and return their IDs as a JSON array.`,
+        content: `From these places: ${JSON.stringify(places)}, select the best 3 and return ONLY their IDs in a JSON array.`,
       },
     ],
     stream: false,
-    temperature: 0.7,
+    temperature: 0.3, // Reduced temperature for more deterministic output
     max_tokens: 100,
-    response_format: { type: 'json' }
+    response_format: { type: 'json_object' } // Specify JSON object format
   };
 
   try {
@@ -34,10 +34,17 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
       throw new Error('Invalid response format from Llama API');
     }
 
-    return JSON.parse(content);
+    // Parse the content and extract the IDs array
+    const parsed = JSON.parse(content);
+    if (!Array.isArray(parsed)) {
+      throw new Error('Expected JSON array response from Llama API');
+    }
+
+    return parsed;
   } catch (error) {
     console.error('Llama API Error:', error);
-    throw new Error('Failed to get recommendations from Llama');
+    // Return empty array as fallback
+    return [];
   }
 }
 
@@ -50,23 +57,36 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
     messages: [
       {
         role: 'system' as const,
-        content: 'You are a travel expert creating personalized travel guides. Always return responses in JSON format with the following structure: { highlights: string[], tips: string[], bestTimeToVisit: string, customRecommendations: string }',
+        content: 'You are a travel expert. Return ONLY a JSON object with this exact structure: {"highlights":[],"tips":[],"bestTimeToVisit":"","customRecommendations":""}',
       },
       {
         role: 'user' as const,
-        content: `Create a travel guide for these places: ${JSON.stringify(places)}. Include highlights, tips, best time to visit, and custom recommendations.`,
+        content: `Create a travel guide for: ${JSON.stringify(places.map(p => p.name))}`,
       },
     ],
     stream: false,
-    temperature: 0.8,
+    temperature: 0.5,
     max_tokens: 1000,
-    response_format: { type: 'json' }
+    response_format: { type: 'json_object' }
   };
 
   try {
     const response = await llamaAPI.run(apiRequest);
-    return JSON.parse(response.choices[0].message.content);
-  } catch {
+    const content = response.choices[0]?.message?.content;
+    
+    if (!content) {
+      throw new Error('Invalid response format from Llama API');
+    }
+
+    const guide = JSON.parse(content) as TravelGuide;
+    return {
+      highlights: guide.highlights || [],
+      tips: guide.tips || [],
+      bestTimeToVisit: guide.bestTimeToVisit || '',
+      customRecommendations: guide.customRecommendations || ''
+    };
+  } catch (error) {
+    console.error('Travel Guide Generation Error:', error);
     throw new Error('Failed to generate travel guide');
   }
 }
