@@ -36,7 +36,8 @@ export async function searchPlaces(destination: string): Promise<{ id: string; n
 // Function to get detailed information about a specific place
 export async function getPlaceDetails(placeId: string): Promise<Place> {
   const response = await fetch(
-    `${TRIPADVISOR_BASE_URL}/location/${placeId}/details`,
+    //location/293986/details?key=A05153BE3910420BA3F2B999FF36B000&language=en&currency=USD
+    `${TRIPADVISOR_BASE_URL}/location/${placeId}/details?key=${TRIPADVISOR_API_KEY}&language=en&currency=USD`,
     {
       method: 'GET',
       headers: {
