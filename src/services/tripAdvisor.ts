@@ -9,9 +9,9 @@ if (!TRIPADVISOR_API_KEY) {
 }
 
 // Function to search for places based on destination and category
-export async function searchPlaces(destination: string, category: string = 'geos'): Promise<{ id: string; name: string }[]> {
+export async function searchPlaces(destination: string): Promise<{ id: string; name: string }[]> {
   const response = await fetch(
-    `${TRIPADVISOR_BASE_URL}/location/search?key=${TRIPADVISOR_API_KEY}&searchQuery=${encodeURIComponent(destination)}&category=${category}&language=en`,
+    `${TRIPADVISOR_BASE_URL}/location/search?key=${TRIPADVISOR_API_KEY}&searchQuery=${encodeURIComponent(destination)}&language=en`,
     {
       method: 'GET',
       headers: {
