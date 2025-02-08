@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Compass } from 'lucide-react';
 import { SearchForm } from './components/SearchForm';
 import { PlaceCard } from './components/PlaceCard';
 import { TravelGuideSection } from './components/TravelGuideSection';
 import { searchPlaces, getPlaceDetails } from './services/tripAdvisor';
 import { selectBestPlaces, generateTravelGuide } from './services/llama';
-import type { Place, SearchResult } from './types/types.ts';
+import type {SearchResult} from './types/types.ts';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);

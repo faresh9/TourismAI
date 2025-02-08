@@ -1,4 +1,3 @@
-import React from 'react'
 import { Place} from "../types/types.ts";
 import { MapPin, Star, DollarSign } from 'lucide-react';
 

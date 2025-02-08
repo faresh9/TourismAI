@@ -1,4 +1,3 @@
-import React from 'react';
 import { Lightbulb, Clock, Info } from 'lucide-react';
 import type { TravelGuide } from '../types/types.ts';
 
