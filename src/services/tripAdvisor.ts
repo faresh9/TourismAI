@@ -52,6 +52,7 @@ export async function getPlaceDetails(placeId: string): Promise<Place> {
   }
 
   const data = await response.json();
+  console.log(data);
   return {
     id: data.location_id,
     name: data.name,
