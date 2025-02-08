@@ -42,7 +42,7 @@ export async function getPlaceDetails(placeId: string): Promise<Place> {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'X-TripAdvisor-API-Key': TRIPADVISOR_API_KEY, // Add the API key in the headers
+       // 'X-TripAdvisor-API-Key': TRIPADVISOR_API_KEY, // Add the API key in the headers
       },
     }
   );
