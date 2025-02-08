@@ -28,8 +28,15 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
 
   try {
     const response = await llamaAPI.run(apiRequest);
-    return JSON.parse(response.choices[0].message.content);
-  } catch {
+    const content = response.choices[0]?.message?.content;
+    
+    if (!content) {
+      throw new Error('Invalid response format from Llama API');
+    }
+
+    return JSON.parse(content);
+  } catch (error) {
+    console.error('Llama API Error:', error);
     throw new Error('Failed to get recommendations from Llama');
   }
 }
