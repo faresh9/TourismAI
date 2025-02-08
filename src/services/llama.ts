@@ -39,7 +39,7 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
     if (!Array.isArray(parsed)) {
       throw new Error('Expected JSON array response from Llama API');
     }
-
+    console.log('Best Places:', parsed);
     return parsed;
   } catch (error) {
     console.error('Llama API Error:', error);
