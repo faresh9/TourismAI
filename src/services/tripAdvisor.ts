@@ -36,13 +36,11 @@ export async function searchPlaces(destination: string): Promise<{ id: string; n
 // Function to get detailed information about a specific place
 export async function getPlaceDetails(placeId: string): Promise<Place> {
   const response = await fetch(
-    //location/293986/details?key=A05153BE3910420BA3F2B999FF36B000&language=en&currency=USD
     `${TRIPADVISOR_BASE_URL}/location/${placeId}/details?key=${TRIPADVISOR_API_KEY}&language=en&currency=USD`,
     {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-       // 'X-TripAdvisor-API-Key': TRIPADVISOR_API_KEY, // Add the API key in the headers
       },
     }
   );
@@ -52,12 +50,15 @@ export async function getPlaceDetails(placeId: string): Promise<Place> {
   }
 
   const data = await response.json();
-  console.log(data);
+  
+  // Convert rating to number and ensure it's valid
+  const rating = typeof data.rating === 'string' ? parseFloat(data.rating) : data.rating;
+  
   return {
     id: data.location_id,
     name: data.name,
     description: data.description || '',
-    rating: data.rating || 0,
+    rating: typeof rating === 'number' && !isNaN(rating) ? rating : 0,
     photos: data.photo?.images?.large?.url ? [data.photo.images.large.url] : [],
     address: data.address_obj?.address_string || '',
     priceLevel: data.price_level || '',
