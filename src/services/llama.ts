@@ -73,7 +73,7 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
   try {
     const response = await llamaAPI.run(apiRequest);
     const content = response.choices[0]?.message?.content;
-    
+    console.log('Travel Guide Response:', content);
     if (!content) {
       throw new Error('Invalid response format from Llama API');
     }
