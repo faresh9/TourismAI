@@ -21,9 +21,9 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
       },
     ],
     stream: false,
-    temperature: 0.3, // Reduced temperature for more deterministic output
-    max_tokens: 100,
-    response_format: { type: 'json_object' } // Specify JSON object format
+    temperature: 0.1, // Reduced temperature further for faster, more consistent responses
+    max_tokens: 50, // Reduced token limit since we only need a short array
+    response_format: { type: 'json_object' }
   };
 
   try {
@@ -34,17 +34,11 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
       throw new Error('Invalid response format from Llama API');
     }
 
-    // Parse the content and extract the IDs array
     const parsed = JSON.parse(content);
-    if (!Array.isArray(parsed)) {
-      throw new Error('Expected JSON array response from Llama API');
-    }
-    console.log('Best Places:', parsed);
-    return parsed;
+    return Array.isArray(parsed) ? parsed.slice(0, 3) : [];
   } catch (error) {
     console.error('Llama API Error:', error);
-    // Return empty array as fallback
-    return [];
+    return places.slice(0, 3).map(p => p.id); // Fallback to first 3 places if API fails
   }
 }
 
@@ -57,17 +51,17 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
     messages: [
       {
         role: 'system' as const,
-        content: 'You are a JSON-only travel guide generator. Output must be a valid JSON object with the following structure, no other text: {"highlights":["item1","item2"],"tips":["tip1","tip2"],"bestTimeToVisit":"season","customRecommendations":"text"}',
+        content: 'Generate a concise travel guide in JSON format: {"highlights":["h1","h2"],"tips":["t1","t2"],"bestTimeToVisit":"season","customRecommendations":"text"}',
       },
       {
         role: 'user' as const,
-        content: `Generate travel guide JSON for: ${JSON.stringify(places.map(p => p.name))}`,
+        content: `Create brief guide for: ${places.map(p => p.name).join(', ')}`,
       }
     ],
     stream: false,
-    temperature: 0.5, // Lower temperature for more consistent output
-    max_tokens: 300,
-    response_format: { type: 'json' } // Change to json instead of json_object
+    temperature: 0.3,
+    max_tokens: 200, // Reduced token limit for faster response
+    response_format: { type: 'json_object' }
   };
 
   try {
@@ -75,24 +69,6 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
     const content = response.choices[0]?.message?.content;
     
     if (!content) {
-      throw new Error('Invalid response format from Llama API');
-    }
-
-    // Add validation for JSON structure
-    let parsed;
-    try {
-      parsed = JSON.parse(content);
-      
-      // Validate required fields
-      if (!Array.isArray(parsed.highlights) || 
-          !Array.isArray(parsed.tips) || 
-          typeof parsed.bestTimeToVisit !== 'string' ||
-          typeof parsed.customRecommendations !== 'string') {
-        throw new Error('Invalid JSON structure');
-      }
-    } catch (parseError) {
-      console.error('JSON Parse Error:', parseError);
-      // Return default structure if parsing fails
       return {
         highlights: [],
         tips: [],
@@ -101,11 +77,12 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
       };
     }
 
+    const parsed = JSON.parse(content);
     return {
-      highlights: parsed.highlights,
-      tips: parsed.tips,
-      bestTimeToVisit: parsed.bestTimeToVisit,
-      customRecommendations: parsed.customRecommendations
+      highlights: Array.isArray(parsed.highlights) ? parsed.highlights : [],
+      tips: Array.isArray(parsed.tips) ? parsed.tips : [],
+      bestTimeToVisit: typeof parsed.bestTimeToVisit === 'string' ? parsed.bestTimeToVisit : '',
+      customRecommendations: typeof parsed.customRecommendations === 'string' ? parsed.customRecommendations : ''
     };
   } catch (error) {
     console.error('Travel Guide Generation Error:', error);
