@@ -1,8 +1,6 @@
-import LlamaAI from 'llamaai';
+import axios from 'axios';
 import { API_CONFIG } from '../config/api';
 import type { Place, TravelGuide } from '../types/types.ts';
-
-const llamaAPI = new LlamaAI(API_CONFIG.LLAMA_API_KEY);
 
 export async function selectBestPlaces(places: { id: string; name: string }[]): Promise<string[]> {
   if (!API_CONFIG.LLAMA_API_KEY) {
@@ -24,12 +22,17 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
     temperature: 0.3, // Reduced temperature for more deterministic output
     max_tokens: 1000,
     response_format: { type: 'json' },
-    model: 'llama3.2-3b' 
+    model: 'llama3.2-1b' // Change to a more cost-effective model
   };
 
   try {
-    const response = await llamaAPI.run(apiRequest);
-    const content = response.choices[0]?.message?.content;
+    const response = await axios.post('https://api.llama-api.com/chat/completions', apiRequest, {
+      headers: {
+        'Authorization': `Bearer ${API_CONFIG.LLAMA_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const content = response.data.choices[0]?.message?.content;
     
     if (!content) {
       throw new Error('Invalid response format from Llama API');
@@ -68,13 +71,18 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
     stream: false,
     temperature: 0.3, // Lower temperature for more consistent output
     max_tokens: 1000,
-    response_format: { type: 'json' }, // Change to json instead of json_object
-    model: 'llama3.2-3b'
+    response_format: { type: 'json' },
+    model: 'llama3.2-1b' // Change to a more cost-effective model
   };
 
   try {
-    const response = await llamaAPI.run(apiRequest);
-    const content = response.choices[0]?.message?.content;
+    const response = await axios.post('https://api.llama-api.com/chat/completions', apiRequest, {
+      headers: {
+        'Authorization': `Bearer ${API_CONFIG.LLAMA_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const content = response.data.choices[0]?.message?.content;
     
     if (!content) {
       throw new Error('Invalid response format from Llama API');
