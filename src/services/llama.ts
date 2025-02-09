@@ -22,8 +22,9 @@ export async function selectBestPlaces(places: { id: string; name: string }[]): 
     ],
     stream: false,
     temperature: 0.3, // Reduced temperature for more deterministic output
-    max_tokens: 100,
-    response_format: { type: 'json_object' } // Specify JSON object format
+    max_tokens: 1000,
+    response_format: { type: 'json' },
+    model: 'llama3.2-3b' 
   };
 
   try {
@@ -67,7 +68,8 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
     stream: false,
     temperature: 0.3, // Lower temperature for more consistent output
     max_tokens: 1000,
-    response_format: { type: 'json' } // Change to json instead of json_object
+    response_format: { type: 'json' }, // Change to json instead of json_object
+    model: 'llama3.2-3b'
   };
 
   try {
