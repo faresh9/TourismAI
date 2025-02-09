@@ -65,8 +65,8 @@ export async function generateTravelGuide(places: Place[]): Promise<TravelGuide>
       }
     ],
     stream: false,
-    temperature: 0.3, // Lower temperature for more consistent output
-    max_tokens: 1000,
+    temperature: 0.5, // Lower temperature for more consistent output
+    max_tokens: 300,
     response_format: { type: 'json' } // Change to json instead of json_object
   };
 
