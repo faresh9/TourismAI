@@ -39,14 +39,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Compass size={48} className="text-blue-500" />
-            <h1 className="text-4xl font-bold">Travel Guide AI</h1>
+            <Compass size={48} className="text-blue-400" />
+            <h1 className="text-4xl font-bold text-white">Travel Guide AI</h1>
           </div>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-300 text-lg">
             Discover the perfect destinations with AI-powered recommendations
           </p>
         </div>
