@@ -1,4 +1,3 @@
-
 import React from "react";
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
@@ -13,17 +12,27 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { DatePickerWithRange } from "./DatePickerWithRange";
-import { ScrollArea } from "./ui/scroll-area";
+import { generateItinerary } from '../api/generateItinerary';
 
 export function TravelForm() {
   const [loading, setLoading] = React.useState(false);
   const [date, setDate] = React.useState<DateRange | undefined>();
+  const [destination, setDestination] = React.useState('');
+  const [preferences, setPreferences] = React.useState('');
+  const [budget, setBudget] = React.useState('');
+  const [email, setEmail] = React.useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Add form submission logic here
-    setTimeout(() => setLoading(false), 2000);
+    try {
+      const travelDates = { start: date?.from, end: date?.to };
+      await generateItinerary({ destination, travelDates, preferences, budget, email });
+    } catch (error) {
+      console.error('Error generating itinerary:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,6 +51,9 @@ export function TravelForm() {
               id="destination"
               placeholder="Where would you like to go?"
               className="backdrop-blur-sm"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              required
             />
           </div>
 
@@ -56,6 +68,8 @@ export function TravelForm() {
               id="preferences"
               placeholder="Tell us about your interests (e.g., adventure, relaxation, culture)"
               className="h-24 backdrop-blur-sm"
+              value={preferences}
+              onChange={(e) => setPreferences(e.target.value)}
             />
           </div>
 
@@ -64,6 +78,8 @@ export function TravelForm() {
             <select
               id="budget"
               className="w-full rounded-md border border-input bg-transparent px-3 py-2 backdrop-blur-sm"
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
             >
               <option value="budget">Budget</option>
               <option value="moderate">Moderate</option>
@@ -78,6 +94,9 @@ export function TravelForm() {
               type="email"
               placeholder="Where should we send your itinerary?"
               className="backdrop-blur-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 

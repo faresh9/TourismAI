@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "openai": "https://cdn.skypack.dev/openai",
+    "@supabase/supabase-js": "https://cdn.skypack.dev/@supabase/supabase-js",
+    "nodemailer": "https://cdn.skypack.dev/nodemailer",
+    "generate_blog_post": "https://uhvustkoavmumkbtfoie.supabase.co/functions/v1/generate_blog_post"
+  }
+}
