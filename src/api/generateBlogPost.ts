@@ -1,5 +1,5 @@
 import { supabase } from '../supabaseClient';
-
+//https://uhvustkoavmumkbtfoie.supabase.co/functions/v1/generate_blog_post
 export const generateBlogPost = async (itineraryId: string) => {
   const response = await fetch('https://uhvustkoavmumkbtfoie.supabase.co/functions/v1/generate_blog_post', {
     method: 'POST',
