@@ -1,7 +1,7 @@
 import { supabase } from '../supabaseClient';
 
 export const generateBlogPost = async (itineraryId: string) => {
-  const response = await fetch('/api/generate_blog_post', {
+  const response = await fetch('https://uhvustkoavmumkbtfoie.supabase.co/functions/v1/generate_blog_post', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
