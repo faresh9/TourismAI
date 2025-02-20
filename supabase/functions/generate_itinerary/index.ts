@@ -18,6 +18,17 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const openai = new OpenAI({ apiKey: openaiApiKey });
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Allow all origins or specify your frontend URL
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
+  }
+
   try {
     const { destination, travelDates, preferences, budget, email } = await req.json();
 
@@ -88,19 +99,23 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Set CORS headers
+    const headers = {
+      'Access-Control-Allow-Origin': '*', // Allow all origins or specify your frontend URL
+      'Content-Type': 'application/json',
+    };
+
+    // Return response with CORS headers
     return new Response(JSON.stringify({ itinerary }), {
       status: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
   } catch (err) {
     console.error('Unexpected error:', err);
     return new Response(JSON.stringify({ error: 'An unexpected error occurred.' }), {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', // Allow all origins or specify your frontend URL
         'Content-Type': 'application/json',
       },
     });

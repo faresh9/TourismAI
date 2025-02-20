@@ -26,7 +26,8 @@ export function TravelForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      const travelDates = { start: date?.from, end: date?.to };
+      const travelDates = { start: date?.from?.toISOString(), end: date?.to?.toISOString() }; // Ensure dates are in ISO format
+      console.log('Travel Dates:', travelDates); // Log the travel dates
       await generateItinerary({ destination, travelDates, preferences, budget, email });
     } catch (error) {
       console.error('Error generating itinerary:', error);
