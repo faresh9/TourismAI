@@ -13,6 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { generateItinerary } from '../api/generateItinerary';
+import parse from 'html-react-parser';
 
 export function TravelForm() {
   const [loading, setLoading] = React.useState(false);
@@ -30,7 +31,7 @@ export function TravelForm() {
       const travelDates = { start: date?.from?.toISOString(), end: date?.to?.toISOString() }; // Ensure dates are in ISO format
       console.log('Travel Dates:', travelDates); // Log the travel dates
       const response = await generateItinerary({ destination, travelDates, preferences, budget, email });
-      setItinerary(await response);
+      setItinerary(await response.itinerary);
       console.log('Itinerary:', itinerary);
     } catch (error) {
       console.error('Error generating itinerary:', error);
@@ -112,15 +113,16 @@ export function TravelForm() {
             {loading ? "Generating Your Plan..." : "Generate Travel Plan"}
           </Button>
         </form>
-
+      
         {itinerary && (
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold">Your Itinerary:</h2>
-            <div className="p-4 border rounded-md bg-gray-100">
-              {itinerary}
+          <div className="mt-6 p-4 border rounded-md bg-gray-50 shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Your Itinerary:</h2>
+            <div className="prose lg:prose-xl">
+              {parse(itinerary)}
             </div>
           </div>
         )}
+        
       </CardContent>
     </Card>
   );
