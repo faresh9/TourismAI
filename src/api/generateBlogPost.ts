@@ -10,7 +10,9 @@ export const generateBlogPost = async (itineraryId: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to generate blog post');
+    const errorText = await response.text(); // Get the error text for debugging
+    console.error('Error generating blog post:', errorText);
+    throw new Error('Failed to generate blog post: ' + errorText);
   }
 
   return response.json();

@@ -21,6 +21,7 @@ export function TravelForm() {
   const [preferences, setPreferences] = React.useState('');
   const [budget, setBudget] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [itinerary, setItinerary] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +29,9 @@ export function TravelForm() {
     try {
       const travelDates = { start: date?.from?.toISOString(), end: date?.to?.toISOString() }; // Ensure dates are in ISO format
       console.log('Travel Dates:', travelDates); // Log the travel dates
-      await generateItinerary({ destination, travelDates, preferences, budget, email });
+      const response = await generateItinerary({ destination, travelDates, preferences, budget, email });
+      setItinerary(await response);
+      console.log('Itinerary:', itinerary);
     } catch (error) {
       console.error('Error generating itinerary:', error);
     } finally {
@@ -109,6 +112,15 @@ export function TravelForm() {
             {loading ? "Generating Your Plan..." : "Generate Travel Plan"}
           </Button>
         </form>
+
+        {itinerary && (
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold">Your Itinerary:</h2>
+            <div className="p-4 border rounded-md bg-gray-100">
+              {itinerary}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
