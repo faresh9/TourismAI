@@ -1,71 +1,116 @@
-# Welcome to your Lovable project
+# Tourism AI
 
-## Project info
+A web application that generates personalized travel itineraries using AI. The app takes user input about their destination, dates, preferences and budget to create custom travel plans and blog posts.
 
-**URL**: https://lovable.dev/projects/c80b8379-9e41-4288-aa28-e7505907a92d
+## Features
 
-## How can I edit this code?
+- AI-powered travel itinerary generation
+- Email delivery of itineraries
+- Automatic blog post creation
+- Date range selection
+- Budget level options
+- Travel preferences customization
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- React + TypeScript
+- Vite
+- Supabase
+- OpenAI GPT
+- SMTP email integration
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c80b8379-9e41-4288-aa28-e7505907a92d) and start prompting.
+## Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Create a `.env` file with required environment variables:
+   ```
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_SERVICE_ROLE_KEY=your_service_key
+   OPENAI_API_KEY=your_openai_key
+   ```
+4. Run development server: `npm run dev`
 
-**Use your preferred IDE**
+## Environment Variables
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key
+- `OPENAI_API_KEY`: OpenAI API key for GPT integration
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## API Endpoints
 
-Follow these steps:
+### Generate Itinerary
+`POST /functions/v1/generate_itinerary`
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Request body:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```json
+{
+  "destination": "Paris, France",
+  "dates": ["2024-05-01", "2024-05-05"],
+  "preferences": {
+    "budget": "medium",
+    "interests": ["history", "art", "shopping"]
+  }
+}
 ```
 
-**Edit a file directly in GitHub**
+Response:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```json
+{
+  "itinerary": "<html>...</html>"
+}
+```
 
-**Use GitHub Codespaces**
+### Create Blog Post
+`POST /functions/v1/create_blog_post`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Request body:
 
-## What technologies are used for this project?
+```json
+{
+  "itinerary": "<html>...</html>",
+  "blog_title": "Travel Guide to Paris"
+}
+```
 
-This project is built with .
+Response:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```json
+{
+  "blog_post": "<html>...</html>"
+}
+```
 
-## How can I deploy this project?
+## Email Integration
 
-Simply open [Lovable](https://lovable.dev/projects/c80b8379-9e41-4288-aa28-e7505907a92d) and click on Share -> Publish.
+The app uses SMTP email integration to send itineraries and blog posts to users. The email service is configured in the `.env` file:
 
-## I want to use a custom domain - is that possible?
+```
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+```
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## Deployment
+
+The app is deployed using Vercel. To deploy:
+
+1. Install Vercel CLI: `npm install -g vercel`
+2. Run: `vercel`
+
+## Contributing
+
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature-name`
+3. Make your changes and commit: `git commit -m 'Add feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Create a pull request
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 

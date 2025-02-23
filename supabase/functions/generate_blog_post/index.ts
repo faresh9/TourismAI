@@ -23,8 +23,22 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({ error: fetchError.message }), { status: 400 });
   }
 
-  // Construct the prompt for GPT to generate a blog post
-  const prompt = `Convert the following itinerary into a blog post:\n\nItinerary:\nDestination: ${itinerary.destination}\nTravel Dates: ${itinerary.travel_dates}\nPreferences: ${itinerary.preferences}\nBudget: ${itinerary.budget}\n\nGenerate a blog post that includes a destination overview, day-by-day breakdown, travel tips, and affiliate links for hotels, flights, activities, travel insurance, and local tours. Include links like: Hotels: [insert hotel affiliate link], Flights: https://kiwi.tp.st/bGJUyY2B, Activities: [insert activity affiliate link], airport rides: [insert affiliate link], Tours: [insert tour affiliate link].`;
+  // Modified prompt with specific affiliate links
+  const prompt = `Convert the following itinerary into a blog post:
+
+Itinerary:
+Destination: ${itinerary.destination}
+Travel Dates: ${itinerary.travel_dates}
+Preferences: ${itinerary.preferences}
+Budget: ${itinerary.budget}
+
+Generate a blog post that includes a destination overview, day-by-day breakdown, and travel tips. Include the following affiliate links naturally throughout the content:
+
+- For hotel bookings: https://hotellook.tp.st/Q71axsc0
+- For flight bookings: https://kiwi.tp.st/bGJUyY2B
+- For activities and attractions: https://ticketnetwork.tp.st/rxKorwrw
+
+Make sure to integrate these links naturally within the content, suggesting readers use them for booking their accommodations, flights, and activities. The blog post should be engaging and helpful while seamlessly incorporating these booking options.`;
 
   // Call OpenAI API to generate the blog post
   const response = await openai.chat.completions.create({

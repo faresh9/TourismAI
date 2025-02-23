@@ -32,10 +32,18 @@ Deno.serve(async (req) => {
   try {
     const { destination, travelDates, preferences, budget, email } = await req.json();
 
-    // Construct the prompt for GPT
-    const prompt = `Generate a travel itinerary for ${destination} from ${travelDates.start} to ${travelDates.end}. 
-    Preferences: ${preferences}. Budget: ${budget}. Include local attractions, cultural experiences, restaurant recommendations, and transportation options. 
-    Please format the itinerary in a way that is easy to style with HTML and CSS.`;
+    // Modified prompt with specific affiliate links
+    const prompt = `Generate a detailed travel itinerary for ${destination} from ${travelDates.start} to ${travelDates.end}. 
+    Preferences: ${preferences}. Budget: ${budget}. 
+    
+    Include local attractions, cultural experiences, restaurant recommendations, and transportation options. 
+    
+    Also include these specific booking recommendations:
+    - Book your hotels through: https://hotellook.tp.st/Q71axsc0
+    - Find the best flights at: https://kiwi.tp.st/bGJUyY2B
+    - Book activities and attractions via: https://ticketnetwork.tp.st/rxKorwrw
+    
+    Please format the itinerary in a way that is easy to style with HTML and CSS, and naturally incorporate the booking links where relevant in the itinerary.`;
 
     // Call OpenAI API
     const response = await openai.chat.completions.create({
